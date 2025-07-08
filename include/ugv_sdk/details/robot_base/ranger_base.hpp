@@ -46,6 +46,10 @@ class RangerBase : public AgilexBase<ProtocolV2Parser>, public RangerInterface {
                                                    r_value);
   }
 
+  void StateResetConfig(uint8_t error_clear_byte) override {
+    AgilexBase<ProtocolV2Parser>::SendStateResetConfig(error_clear_byte);
+  }
+
   void DisableLightControl() override {
     AgilexBase<ProtocolV2Parser>::DisableLightControl();
   }

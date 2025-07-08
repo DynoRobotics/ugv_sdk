@@ -47,6 +47,7 @@ class RangerRobot : public RobotCommonInterface, public RangerInterface {
                         double angular_vel = 0.0) override;
   void SetLightCommand(AgxLightMode f_mode, uint8_t f_value,
                        AgxLightMode r_mode, uint8_t r_value) override;
+  void StateResetConfig(uint8_t error_clear_byte) override;
 
   // get robot state
   RangerCoreState GetRobotState() override;

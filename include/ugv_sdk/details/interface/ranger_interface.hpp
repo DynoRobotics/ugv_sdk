@@ -64,6 +64,7 @@ struct RangerInterface {
                                 double angular_vel) = 0;
   virtual void SetLightCommand(AgxLightMode f_mode, uint8_t f_value,
                                AgxLightMode r_mode, uint8_t r_value) = 0;
+  virtual void StateResetConfig(uint8_t error_clear_byte) = 0;
   virtual void DisableLightControl() = 0;
 
   // get robot state

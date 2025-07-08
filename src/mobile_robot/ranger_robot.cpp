@@ -61,6 +61,12 @@ void RangerRobot::SetLightCommand(AgxLightMode f_mode, uint8_t f_value,
   return ranger->SetLightCommand(f_mode, f_value, r_mode, r_value);
 }
 
+void RangerRobot::StateResetConfig(uint8_t error_clear_byte) {
+  auto ranger = dynamic_cast<RangerInterface*>(robot_);
+  return ranger->StateResetConfig(error_clear_byte);
+
+}
+
 // get robot state
 RangerCoreState RangerRobot::GetRobotState() {
   auto ranger = dynamic_cast<RangerInterface*>(robot_);

@@ -141,6 +141,18 @@ class AgilexBase : public RobotCommonInterface {
     }
   }
 
+  void SendStateResetConfig(uint8_t error_clear_byte) {
+    if (can_ != nullptr && can_->IsOpened()) {
+      AgxMessage msg;
+      msg.type = AgxMsgStateResetConfig;
+      msg.body.state_reset_config_msg.error_clear_byte = error_clear_byte;
+
+      // send to can bus
+      can_frame frame;
+      if (parser_.EncodeMessage(&msg, &frame)) can_->SendFrame(frame);
+    }
+  }
+
   void DisableLightControl() {
     if (can_ != nullptr && can_->IsOpened()) {
       AgxMessage msg;

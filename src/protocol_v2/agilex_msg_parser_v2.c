@@ -77,8 +77,10 @@ bool DecodeCanFrameV2(const struct can_frame *rx_frame, AgxMessage *msg) {
                     (uint16_t)(frame->battery_voltage.high_byte) << 8) *
           0.1;
       msg->body.system_state_msg.error_code =
-          (uint16_t)(frame->error_code.low_byte) |
-          (uint16_t)(frame->error_code.high_byte) << 8;
+          (uint32_t)(frame->error_code.lsb) |
+          (uint32_t)(frame->error_code.low_byte) << 8 |
+          (uint32_t)(frame->error_code.high_byte) << 16 |
+          (uint32_t)(frame->error_code.msb) << 24;
       break;
     }
     case CAN_MSG_MOTION_STATE_ID: {
@@ -469,10 +471,14 @@ bool EncodeCanFrameV2(const AgxMessage *msg, struct can_frame *tx_frame) {
           (uint16_t)(msg->body.system_state_msg.battery_voltage * 10);
       frame.battery_voltage.high_byte = (uint8_t)(battery >> 8);
       frame.battery_voltage.low_byte = (uint8_t)(battery & 0x00ff);
-      frame.error_code.high_byte =
-          (uint8_t)(msg->body.system_state_msg.error_code >> 8);
+      frame.error_code.lsb =
+          (uint8_t)(msg->body.system_state_msg.error_code & 0x000000ff);
       frame.error_code.low_byte =
-          (uint8_t)(msg->body.system_state_msg.error_code & 0x00ff);
+          (uint8_t)((msg->body.system_state_msg.error_code >> 8) & 0x000000ff);
+      frame.error_code.high_byte =
+          (uint8_t)((msg->body.system_state_msg.error_code >> 16) & 0x000000ff);
+      frame.error_code.msb =
+          (uint8_t)((msg->body.system_state_msg.error_code >> 24) & 0x000000ff);
       memcpy(tx_frame->data, (uint8_t *)(&frame), tx_frame->can_dlc);
       break;
     }

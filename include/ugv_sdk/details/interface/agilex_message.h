@@ -76,7 +76,7 @@ typedef struct {
   AgxVehicleState vehicle_state;
   AgxControlMode control_mode;
   float battery_voltage;
-  uint16_t error_code;
+  uint32_t error_code;
 } SystemStateMessage;
 
 typedef struct {
